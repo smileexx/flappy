@@ -1,28 +1,87 @@
+
+App.CONST = {
+    gravity: 5,
+    speed: 1
+};
+
+App.spriteList = {};
+
+App.canvas = null;
+App.ctx = null;
+
+
 Gcanvas = null;
 Gctx = null;
 G_GRAVITY = 5;
 G_VELOCITY = 2;
-window.onload = function () {
-    window.Gcanvas = document.getElementById('canvas');
-    window.Gctx = Gcanvas.getContext('2d');
-    let game = new Game();
-    game.run();
 
-    document.addEventListener('keydown', function (e) {
-        game.keypress();
-    });
+App.Game = new class Game {
+
+
+
+    run() {
+        // App.spriteList[ 'bird' ]
+        let sprite = new App.Sprite("assets/sprite.png", 0, 480, 30, 30);
+        console.log(sprite.img);
+        let img  = new Image();
+        img.src = "assets/sprite.png";
+        img.onload = function() {
+            App.ctx.drawImage(img, 0, 485, 30, 30, 10, 10, 30, 30 );
+        }
+        // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+
+    };
+
+    update() {
+        // draw background
+        App.ctx.fillStyle = "#4ed0f5";
+        App.ctx.fillRect(0, 0, Gcanvas.width, Gcanvas.height);
+
+        // move pipes
+        pipe.move(G_VELOCITY);
+
+        // move bird
+        let move = pressed ? -25 * G_GRAVITY * pressed : G_GRAVITY;
+        console.log('move ', move);
+        bird.move(move);
+        pressed = 0;
+
+
+
+        // Loop game and redraw canvas
+        requestAnimationFrame(update);
+
+    };
+
+    keypress(e) {
+
+    };
 };
 
 
+
+
+window.onload = function () {
+    App.canvas = document.getElementById('canvas');
+    App.ctx = App.canvas.getContext('2d');
+
+    App.Game.run();
+
+    document.addEventListener('keydown', function (e) {
+        App.Game.keypress(e);
+    });
+};
+/*
+
 function Game() {
     let pressed = 0;
-    /**
+    /!**
      * @type Pipe
-     */
+     *!/
     let pipe = null;
-    /**
+    /!**
      * @type Bird
-     */
+     *!/
     let bird = null;
     let pipes = [];
 
@@ -67,10 +126,10 @@ function Game() {
 
 
 // ###################################################################################################################
-/**
+/!**
  * Pipe Class
  * @constructor
- */
+ *!/
 function Pipe(x, y) {
     let self = this;
 
@@ -102,10 +161,10 @@ function Pipe(x, y) {
 
 
 // ###################################################################################################################
-/**
+/!**
  * Bird Class
  * @constructor
- */
+ *!/
 function Bird(x, y) {
     let self = this;
 
@@ -141,4 +200,4 @@ function Bird(x, y) {
     draw();
 };
 
-// ###################################################################################################################
+// ###################################################################################################################*/
